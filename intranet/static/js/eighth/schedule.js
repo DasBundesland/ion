@@ -175,5 +175,8 @@ $(function() {
         if (activities !== "" && !confirm("Are you sure you want to add the following activities without a sponsor?\n" + activities)) {
             e.preventDefault();
         }
+        if($("input[type='checkbox'].unschedule").prop("checked") && $("input[type=checkbox].sticky").prop("checked") > 0 && !confirm("Cancelling a sticky activity allows students to switch out of it. \nDo you want to continue?")){
+            e.preventDefault();
+        }
     });
 });
