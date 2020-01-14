@@ -149,7 +149,7 @@ $(function() {
                     var ntd = $("td[data-field='" + field + "']", $(this));
                     var ninp = $("input, select, textarea", ntd);
                     ninp.val(modVal);
-                });
+                });(
             }
         }
     });
@@ -175,8 +175,20 @@ $(function() {
         if (activities !== "" && !confirm("Are you sure you want to add the following activities without a sponsor?\n" + activities)) {
             e.preventDefault();
         }
-        if($("input[type='checkbox'].unschedule").prop("checked") && $("input[type=checkbox].sticky").prop("checked") > 0 && !confirm("Cancelling a sticky activity allows students to switch out of it. \nDo you want to continue?")){
-            e.preventDefault();
-        }
+        $("tr.form-row:not(.hidden)").each(function(i, el) {
+          if($(this).hasClass("scheduled")){
+              var stickyCancel = "";
+              var scheduledField = $("td[data-field='scheduled'] input", el);
+              var stickyField = $("td[data-field='sticky'] input", el);
+              if (!scheduledField.prop("checked")) {
+                  // TODO: Implement check for sticky flag on activity.
+                  if(stickyField.prop("checked") || ((activityIsSticky == True) && !$("input[type='checkbox'].sticky").prop("checked"))) {
+                      stickyCancel += "\n    " + $(".block-name a.ui-link", el).text().trim();
+                  }
+              }
+          }
+      });
+      if (stickyCancel !== "" && !confirm("Cancelling the following sticky activities will allow students to switch out of them. Are you sure?\n" + stickyCancel)){
+          e.preventDefault();
+      }
     });
-});

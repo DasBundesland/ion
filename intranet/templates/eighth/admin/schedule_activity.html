@@ -18,6 +18,7 @@
 
     <script>
     $(function() {
+        var activityIsSticky = "{{ activity.sticky }}";
         $(".schedule-form").areYouSure();
         $("a#schedule-activity").click(function() {
             var v = $("#activity-select").val();
