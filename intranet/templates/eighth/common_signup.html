@@ -1,0 +1,83 @@
+{% extends "page_with_nav.html" %}
+{% load static %}
+{% load math %}
+{% load strings %}
+{% load pipeline %}
+
+{% block title %}
+    {{ block.super }} - Eighth Period {%comment%} {% if active_block%} - {{ active_block }}{%endif%} {% endcomment %}
+{% endblock %}
+
+{% block css %}
+    {{ block.super }}
+    {% stylesheet 'eight.signup' %}
+    {% if not real_user.is_eighth_admin %}
+        <style>
+            #activity-list li[data-administrative=true] {
+                display: none;
+            }    
+            dl.activityid {
+                display: none;
+            }
+        </style>
+    {% endif %}
+    {% stylesheet 'eighth.admin' %}
+    {% stylesheet 'profile' %}
+    {% stylesheet 'eighth.profile' %}
+{% endblock %}
+
+{% block js %}
+    {{ block.super }}
+    <script src="{% static 'js/vendor/jquery.scrollto.min.js'%}"></script>
+    <script src="{% static 'js/vendor/json2.js'%}"></script>
+    <script src="{% static 'js/vendor/underscore-min.js' %}"></script>
+    <script src="{% static 'js/vendor/backbone-min.js' %}"></script>
+    <script src="{% static 'js/vendor/spin.min.js' %}"></script>
+    <script>
+        window.loadModels = function() {
+            window.activityModels = new eighth.ActivityList();
+            jsonData = $.parseJSON("{% if no_blocks %}[]{% else %}{{ activities_list }}{% endif %}");
+
+            data = _.values(jsonData);
+
+            if(data.length < 1) {
+                console.log("Empty dataset")
+                $(function(){
+                    $("ul.all-activities").append("<p>There are no activities available for signup at this time.</p>");
+                });
+            }
+            activityModels.reset(data);
+            _.each(activityModels.models, function(activity){
+                activiy.attributes.selected = (activity.attributes.id == "{{ active_block_current_signup }}"); // |escape
+            });
+            window.activeBlockLocked = {% if active_block.locked %}true{% else %}false{% endif %}; 
+        }
+        window.isEighthAdmin = {% if request.user.is_eighth_admin %}true{% else %}false{% endif %};
+        window.waitlistEnabled = {% if waitlist_enabled %}true{% else %}false{% endif %};
+        window.blockIsToday = {% if active_block.is_today %}true{% else %}false{% endif %};
+        window.signupTime = new Date({{ active_block.date|date:'Y,m-1,j' }},{{ active_block.signup_time|time:'G,i' }});
+        window.isSelfSignup = {% if request.user == user %}true{% else %}false{% endif %};
+        // window.currentWaitlist = false;
+        var pn = location.pathname.substring(7);
+        window.isDefaultPage = (pn == "" || pn == "/" || pn == "/signup" || pn == "/signup/");
+    </script>
+    <script src="{% static 'js/eighth/responsive.js' %}"></script>
+    <script src="{% static 'js/eighth/signupUI.js' %}"></script>
+    <script src="{% static 'js/eighth/signup.js' %}"></script>
+    <script src="{% static 'js/eighth/signup.search.js' %}"></script>
+{% endblock %}
+
+{% block head %}
+    {% if dark_mode_enabled %}
+        {% stylesheet 'dark/base' %}
+        {% stylesheet 'dark/nav' %}
+        {% stylesheet 'dark/eighth.signup' %}
+        <script>spinnerOptions.color = "#FFF";</script>
+    {% endif %}
+{% endblock %}
+
+{% block main %}
+    
+
+
+{% endblock %}
