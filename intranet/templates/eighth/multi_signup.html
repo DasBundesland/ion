@@ -1,11 +1,11 @@
-{% extends "page_with_nav.html" %}
+{% extends "base_signup.html" %}
 {% load static %}
 {% load math %}
 {% load strings %}
 {% load pipeline %}
 
 
-{% block title %}
+{% comment %} {% block title %}
     {{ block.super }} - Eighth Period
 {% endblock %}
 
@@ -87,7 +87,7 @@
         {% stylesheet 'dark/eighth.signup' %}
         <script>spinnerOptions.color = "#FFF";</script>
     {% endif %}
-{% endblock %}
+{% endblock %} {% endcomment %}
 
 {% block main %}
     <script type="text/template" id="activity-list-row-template">
