@@ -133,7 +133,16 @@ EMAIL_ANNOUNCEMENTS = True
 EMAIL_FROM = "ion-noreply@tjhsst.edu"
 
 # Use PostgreSQL database
-DATABASES = {"default": {"ENGINE": "django_prometheus.db.backends.postgresql", "CONN_MAX_AGE": 30}}  # type: Dict[str,Dict[str,Any]]
+DATABASES = {"default": 
+    {"ENGINE": "django_prometheus.db.backends.postgresql",
+     #"CONN_MAX_AGE": 30, 
+     "NAME":'ion', 
+     "USER":'ion', 
+     "PASSWORD":'postgres', 
+     "HOST":'db', 
+     "PORT":5432
+     }
+}  # type: Dict[str,Dict[str,Any]]
 
 # Address to send feedback messages to
 FEEDBACK_EMAIL = "intranet@tjhsst.edu"
@@ -437,7 +446,7 @@ if not PRODUCTION and os.getenv("SHORT_CACHE", "NO") == "YES":
 
 # Cacheops configuration
 # may be removed in the future
-CACHEOPS_REDIS = {"host": "127.0.0.1", "port": 6379, "db": 1, "socket_timeout": 1}
+CACHEOPS_REDIS = {"host": "redis", "port": 6379, "db": 1, "socket_timeout": 1}
 
 CACHEOPS = {
     "eighth.*": {"timeout": int(datetime.timedelta(hours=24).total_seconds())},  # Only used for caching activity, block lists
@@ -454,7 +463,7 @@ if not TESTING:
     # It allows customization of certain session-related behavior. See the comments in intranet/utils/session.py for more details.
     SESSION_ENGINE = "intranet.utils.session"
 
-    SESSION_REDIS_HOST = "127.0.0.1"
+    SESSION_REDIS_HOST = "redis"
     SESSION_REDIS_PORT = 6379
     SESSION_REDIS_DB = 0
     SESSION_REDIS_PREFIX = "ion:session"
@@ -850,7 +859,7 @@ elif PRODUCTION or SECRET_DATABASE_URL is not None:
     DATABASES["default"].update(helpers.parse_db_url(SECRET_DATABASE_URL))
 else:
     # Default testing db config.
-    DATABASES["default"].update({"NAME": "ion", "USER": "ion", "PASSWORD": "pwd"})
+    DATABASES["default"].update({"NAME": "ion", "USER": "ion", "PASSWORD": "postgres"})
 
 # Set up sentry logging
 if PRODUCTION:

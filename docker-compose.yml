@@ -1,0 +1,23 @@
+version: '3'
+
+services: 
+    db:
+        image: postgres
+        environment: 
+            - POSTGRES_DB=ion
+            - POSTGRES_USER=ion
+            - POSTGRES_PASSWORD=postgres
+    redis:
+        image: redis
+        ports: 
+            - "6379:6379"
+    ion:
+        build: .
+        working_dir: "/usr/src/intranet"
+        command: bash -c "python manage.py migrate && python manage.py makemigrations && fab runserver"
+        ports:
+            - "8080:8080"
+            - "5555:5555"
+        depends_on: 
+            - db
+            - redis
