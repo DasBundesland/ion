@@ -486,7 +486,7 @@ if TESTING or os.getenv("DUMMY_CACHE", "NO") == "YES" or NO_CACHE:
 else:
     CACHES["default"] = {
         "BACKEND": "redis_cache.RedisCache",
-        "LOCATION": "127.0.0.1:6379",
+        "LOCATION": "redis:6379", #docker comp
         "OPTIONS": {"PARSER_CLASS": "redis.connection.HiredisParser", "PICKLE_VERSION": 4},
         "KEY_PREFIX": "ion",
     }
@@ -785,7 +785,7 @@ BUS_PAGE_CHANGEOVER_HOUR = 12
 NONLOGGABLE_USER_AGENT_SUBSTRINGS = ["Prometheus", "GoogleBot", "UptimeRobot"]
 
 # The location of the Celery broker (message transport)
-CELERY_BROKER_URL = "amqp://localhost"
+CELERY_BROKER_URL = "amqp://rabbit"
 
 CELERY_ACCEPT_CONTENT = ["json", "pickle"]
 CELERY_TASK_SERIALIZER = "pickle"

@@ -50,3 +50,4 @@ package-lock.json
 # Virtual environments
 venv/
 .venv/
+intranet/static/css/.sass-cache/
