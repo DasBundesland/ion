@@ -50,4 +50,7 @@ package-lock.json
 # Virtual environments
 venv/
 .venv/
+
+# Docker ignores
 intranet/static/css/.sass-cache/
+_db_data/
