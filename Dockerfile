@@ -21,8 +21,6 @@ RUN git config --global user.name "username" && git config --global user.email "
 RUN apt-get -y install cups cups-bsd cups-client
 RUN echo "ServerName cups2.csl.tjhsst.edu" > /etc/cups/client.conf
 RUN cp intranet/config/bash_completion.d/fab /etc/bash_completion.d/fab
-RUN bash -c mkvirtualenv --python=python3 ion
-RUN bash -c workon ion
 RUN touch .bash_history
 RUN apt-get -y install htop glances
 RUN if [[ -x which gem ]]; then gem uninstall sass; fi
