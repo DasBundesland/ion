@@ -7,8 +7,6 @@ services:
             - POSTGRES_DB=ion
             - POSTGRES_USER=ion
             - POSTGRES_PASSWORD=postgres
-        volumes:
-            - "./_db_data/:/var/lib/postgresql/data"
     redis:
         image: redis
         ports: 
