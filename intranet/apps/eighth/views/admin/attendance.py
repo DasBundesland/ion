@@ -10,6 +10,7 @@ from django.contrib.auth import get_user_model
 from django.core.paginator import Paginator
 from django.db.models import Count, Q
 from django.shortcuts import redirect, render
+from django.core.paginator import Paginator
 
 from .....utils.helpers import is_entirely_digit
 from ....auth.decorators import eighth_admin_required
