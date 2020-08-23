@@ -7,6 +7,7 @@ from cacheops import invalidate_obj
 from django import http
 from django.contrib import messages
 from django.contrib.auth import get_user_model
+from django.core.paginator import Paginator
 from django.db.models import Count, Q
 from django.shortcuts import redirect, render
 
@@ -124,8 +125,14 @@ def delinquent_students_view(request):
     context["delinquents"] = delinquents
 
     if request.resolver_match.url_name == "eighth_admin_view_delinquent_students":
-        context["admin_page_title"] = "Delinquent Students"
-        return render(request, "eighth/admin/delinquent_students.html", context)
+        if delinquents is not None:
+            context["admin_page_title"] = "Delinquent Students"
+            delinquents_paginator = Paginator(delinquents, 30)
+            page_number = request.GET.get("page")
+            delinquents_page = delinquents_paginator.get_page(page_number)
+            return render(request, "eighth/admin/delinquent_students.html", {"delinquents_page": delinquents_page})
+        else:
+            return render(request, "eighth/admin/delinquent_students.html", {"delinquents_page": None})
     else:
         response = http.HttpResponse(content_type="text/csv")
         response["Content-Disposition"] = 'attachment; filename="delinquent_students.csv"'

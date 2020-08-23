@@ -10,6 +10,7 @@ Subpackages
    intranet.apps.eighth.forms
    intranet.apps.eighth.management
    intranet.apps.eighth.tests
+   intranet.apps.eighth.templatetags
    intranet.apps.eighth.views
 
 Submodules
